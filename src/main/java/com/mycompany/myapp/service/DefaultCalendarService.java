@@ -4,18 +4,17 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.mycompany.myapp.dao.CalendarUserDao;
 import com.mycompany.myapp.dao.EventAttendeeDao;
 import com.mycompany.myapp.dao.EventDao;
+import com.mycompany.myapp.dao.UserRoleDao;
 import com.mycompany.myapp.domain.CalendarUser;
 import com.mycompany.myapp.domain.Event;
 import com.mycompany.myapp.domain.EventAttendee;
 import com.mycompany.myapp.domain.EventLevel;
+import com.mycompany.myapp.domain.UserRole;
 
 
 @Service("calendarService")
@@ -31,9 +30,16 @@ public class DefaultCalendarService implements CalendarService {
 
 	@Autowired
 	private EventAttendeeDao eventAttendeeDao;
+	
+	private UserRoleDao userRoleDao;
 
 	public void setEventDao(EventDao eventDao) {
 		this.eventDao = eventDao;
+	}
+	
+	@Autowired
+	public void setUserRoleDao(UserRoleDao userRoleDao) {
+		this.userRoleDao = userRoleDao;
 	}
 	
 	/* CalendarUser */
@@ -54,6 +60,8 @@ public class DefaultCalendarService implements CalendarService {
 
 	@Override
 	public int createUser(CalendarUser user) {
+		UserRole userRole = new UserRole(user.getId(), "ROLE_USER");
+		this.userRoleDao.add(userRole);
 		return userDao.createUser(user);
 	}
 

@@ -24,4 +24,8 @@
 		<property name="username" value="spring" />
 		<property name="password" value="book" />
 	</bean>
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
 </beans>
